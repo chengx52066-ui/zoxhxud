@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Gallery</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        AI Prompt Gallery
+    </div>
+
+    <nav>
+
+        <a href="#">Home</a>
+        <a href="#">Gallery</a>
+        <a href="#">About</a>
+
+    </nav>
+
+</header>
+
+<section class="hero">
+
+    <div class="hero-text">
+
+        <h1>
+            AI Image Prompt Gallery
+        </h1>
+
+        <p>
+
+            展示我的AI绘画作品以及对应Prompt，
+            所有Prompt均可复制学习。
+
+        </p>
+
+        <div class="search-box">
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="搜索 Prompt..."
+
+            >
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="tags">
+
+<button class="tag active">All</button>
+
+<button class="tag">Cyberpunk</button>
+
+<button class="tag">Portrait</button>
+
+<button class="tag">Fantasy</button>
+
+<button class="tag">Sci-Fi</button>
+
+</section>
+
+<section class="gallery">
+
+<div class="card">
+
+<img src="images/image1.jpg">
+
+<div class="content">
+
+<h2>Cyberpunk City</h2>
+
+<div class="tag-list">
+
+<span>Cyberpunk</span>
+
+<span>4K</span>
+
+<span>Sci-Fi</span>
+
+</div>
+
+<div class="prompt">
+
+<p>
+
+Ultra realistic cyberpunk city, cinematic lighting, neon lights,
+highly detailed architecture, volumetric fog,
+masterpiece, HDR, Unreal Engine, Octane Render,
+8K resolution...
+
+</p>
+
+</div>
+
+<button class="copy-btn">
+
+复制 Prompt
+
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<img src="images/image2.jpg">
+
+<div class="content">
+
+<h2>Ancient Warrior</h2>
+
+<div class="tag-list">
+
+<span>Fantasy</span>
+
+<span>Movie</span>
+
+<span>Portrait</span>
+
+</div>
+
+<div class="prompt">
+
+<p>
+
+Ultra realistic ancient Chinese warrior,
+cinematic portrait,
+dramatic lighting,
+film grain,
+8K,
+high detail,
+realistic skin texture...
+
+</p>
+
+</div>
+
+<button class="copy-btn">
+
+复制 Prompt
+
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<img src="images/image3.jpg">
+
+<div class="content">
+
+<h2>Modern Portrait</h2>
+
+<div class="tag-list">
+
+<span>Portrait</span>
+
+<span>Photography</span>
+
+</div>
+
+<div class="prompt">
+
+<p>
+
+Professional DSLR portrait,
+85mm lens,
+f1.8,
+natural skin texture,
+high detail,
+RAW photo,
+HDR,
+masterpiece...
+
+</p>
+
+</div>
+
+<button class="copy-btn">
+
+复制 Prompt
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<button id="topBtn">
+
+↑
+
+</button>
+
+<footer>
+
+©2026 AI Prompt Gallery
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
