@@ -1,25 +1,207 @@
-Restore this old photograph into a natural 4K ultra-high-resolution image while preserving every original detail exactly.
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>扁粉菜介绍</title>
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Microsoft YaHei", system-ui, -apple-system, Arial, sans-serif;
+      background:#fff7ee;
+      color:#2b2b2b;
+      line-height:1.7;
+    }
+    header{
+      background: linear-gradient(120deg,#ff7a18,#ffb347);
+      color:#fff;
+      padding:36px 18px;
+      text-align:center;
+    }
+    header h1{margin:0 0 8px;font-size:34px}
+    header p{margin:0;opacity:.95}
+    nav{
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(8px);
+      border-bottom:1px solid #f0e3d6;
+      z-index: 10;
+    }
+    nav .bar{
+      max-width:1000px;
+      margin:0 auto;
+      padding:10px 18px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    nav a{
+      text-decoration:none;
+      color:#6a3b00;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid #f0e3d6;
+      background:#fff;
+      font-size:14px;
+    }
+    nav a:hover{background:#fff3e6}
+    .container{max-width:1000px;margin:0 auto;padding:22px 18px 60px}
+    .card{
+      background:#fff;
+      border:1px solid #f0e3d6;
+      border-radius:16px;
+      padding:18px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.05);
+      margin:14px 0;
+    }
+    h2{margin:0 0 10px;color:#6a3b00}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+    }
+    @media (max-width:780px){ .grid{grid-template-columns:1fr} }
+    .imgbox{
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid #f0e3d6;
+      background:#fff3e6;
+      min-height:220px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#8a5a1f;
+      text-align:center;
+      padding:18px;
+    }
+    .tag{
+      display:inline-block;
+      margin:6px 6px 0 0;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid #f0e3d6;
+      background:#fff7ee;
+      color:#6a3b00;
+      font-size:13px;
+    }
+    ul{margin:8px 0 0 18px}
+    .steps li{margin:6px 0}
+    footer{
+      text-align:center;
+      padding:20px 18px;
+      color:#7b6a58;
+      border-top:1px solid #f0e3d6;
+      background:#fff;
+    }
+    .note{color:#6b6b6b;font-size:14px}
+  </style>
+</head>
+<body>
 
-Strictly preserve:
-- The identity, facial features, facial structure, age, expression, hairstyle, skin tone, body shape, and pose of every person exactly as in the original.
-- Do NOT beautify faces or change anyone's appearance.
-- Preserve the original clothing style, fabric texture, patterns, and primary colors exactly.
-- Preserve all text, signs, logos, handwriting, labels, and printed characters exactly without modification.
-- Preserve the original composition, camera angle, perspective, lighting direction, and scene layout.
+<header>
+  <h1>扁粉菜介绍</h1>
+  <p>一碗热乎的河南家常味：扁粉、豆腐、粉条与浓汤的组合</p>
+</header>
 
-Restore only:
-- Remove blur, noise, JPEG artifacts, scratches, stains, folds, fading, dust, and compression artifacts.
-- Recover realistic facial details, skin texture, hair strands, clothing textures, and background details.
-- Improve sharpness, dynamic range, exposure, white balance, and color accuracy.
-- Increase resolution to true 4K quality while maintaining a natural photographic appearance.
+<nav>
+  <div class="bar">
+    <a href="#about">什么是扁粉菜</a>
+    <a href="#origin">起源与特点</a>
+    <a href="#ingredients">常见食材</a>
+    <a href="#taste">口感与吃法</a>
+    <a href="#recipe">简易做法</a>
+  </div>
+</nav>
 
-Requirements:
-- Photorealistic.
-- No AI-generated look.
-- No content changes.
-- No face enhancement or beautification.
-- No clothing color changes.
-- No text modifications.
-- Preserve every person's identity exactly.
-- Preserve every object and every detail exactly.
-- Enhance quality only.
+<div class="container">
+
+  <section id="about" class="card">
+    <div class="grid">
+      <div>
+        <h2>什么是扁粉菜？</h2>
+        <p>
+          <strong>扁粉菜</strong>是一道常见于河南地区的家常汤菜/小吃，通常以“扁粉（红薯粉皮或宽粉）”
+          为主，搭配豆腐、粉条、青菜等，再浇上热汤或卤汁，味道鲜香、口感滑润。
+        </p>
+        <span class="tag">热汤</span>
+        <span class="tag">爽滑</span>
+        <span class="tag">家常</span>
+        <span class="tag">河南风味</span>
+        <p class="note">可根据地区与店家不同，配料和汤底会有差异。</p>
+      </div>
+      <div class="imgbox">
+        这里可放扁粉菜图片<br/>
+        建议：将图片保存为 <b>banfencai.jpg</b><br/>
+        然后用 &lt;img&gt; 替换本区域
+      </div>
+    </div>
+  </section>
+
+  <section id="origin" class="card">
+    <h2>起源与特点</h2>
+    <p>
+      扁粉菜多见于河南各地早餐摊、小馆子和家庭厨房。它的特点在于：
+    </p>
+    <ul>
+      <li><strong>经济实惠</strong>：用常见食材就能做出一碗满足感很强的热汤。</li>
+      <li><strong>搭配自由</strong>：可加卤肉、海带、豆皮、鸡蛋等，丰俭由人。</li>
+      <li><strong>口感丰富</strong>：扁粉软滑、豆腐嫩、粉条筋道、青菜清爽。</li>
+      <li><strong>汤底关键</strong>：高汤、骨汤或卤汤都能成就不同风味。</li>
+    </ul>
+  </section>
+
+  <section id="ingredients" class="card">
+    <h2>常见食材</h2>
+    <div class="grid">
+      <div>
+        <ul>
+          <li><strong>主料</strong>：扁粉/粉皮（红薯粉制更常见）</li>
+          <li><strong>配料</strong>：嫩豆腐、粉条、青菜（小白菜/菠菜）</li>
+          <li><strong>调味</strong>：盐、酱油、醋、蒜汁、辣椒油、胡椒粉</li>
+          <li><strong>增香</strong>：香菜、葱花、香油</li>
+        </ul>
+        <p class="note">喜欢更“肉香”的可以加卤肉丁或骨汤；清淡派可用素高汤。</p>
+      </div>
+      <div class="imgbox">
+        配料示意：<br/>
+        扁粉 + 豆腐 + 粉条 + 青菜 + 热汤
+      </div>
+    </div>
+  </section>
+
+  <section id="taste" class="card">
+    <h2>口感与吃法</h2>
+    <p>
+      扁粉菜吃起来<strong>滑、嫩、鲜、暖</strong>：扁粉吸汤后柔软入味，豆腐入口细嫩，粉条更有嚼劲。
+      一般趁热吃，出锅后可按口味加入醋、蒜汁、辣椒油或胡椒粉提升层次。
+    </p>
+    <p class="note">小贴士：喜欢酸辣口的，建议“先加醋后加辣”，味道更干净。</p>
+  </section>
+
+  <section id="recipe" class="card">
+    <h2>简易做法（家庭版）</h2>
+    <ol class="steps">
+      <li>准备：扁粉切条/掰块，豆腐切丁，粉条泡软，青菜洗净。</li>
+      <li>煮汤：锅中加高汤或清水，放少许盐、酱油、胡椒粉调味。</li>
+      <li>下料：先下粉条与豆腐，小火煮 3–5 分钟，再放扁粉。</li>
+      <li>收口：扁粉变软后加入青菜烫熟，关火淋少许香油。</li>
+      <li>出碗：撒葱花/香菜，按喜好加醋、蒜汁、辣椒油即可。</li>
+    </ol>
+    <p class="note">想更浓稠：可用少量淀粉水勾薄芡；想更清爽：不勾芡也很好吃。</p>
+  </section>
+
+</div>
+
+<footer>
+  © 2026 扁粉菜介绍网页｜可自行修改内容与配色
+</footer>
+
+</body>
+</html>
+```
+
+如果你希望网页更像“美食店铺宣传页”（加轮播图、菜单价格、在线下单按钮），告诉我你想要的风格（简约/国风/夜市风）和需要的栏目，我可以继续完善。
