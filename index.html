@@ -1,207 +1,690 @@
-```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>扁粉菜介绍</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>像素风贪吃蛇</title>
   <style>
-    *{box-sizing:border-box}
-    body{
+    :root{
+      --bg:#0f1020;
+      --panel:#1b1e34;
+      --panel2:#232744;
+      --text:#f3f6ff;
+      --muted:#9aa3c7;
+      --accent:#7cf29a;
+      --danger:#ff6b6b;
+      --gold:#ffd86b;
+      --blue:#7cc7ff;
+      --line:#39406b;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    html,body{
       margin:0;
-      font-family: "Microsoft YaHei", system-ui, -apple-system, Arial, sans-serif;
-      background:#fff7ee;
-      color:#2b2b2b;
-      line-height:1.7;
-    }
-    header{
-      background: linear-gradient(120deg,#ff7a18,#ffb347);
-      color:#fff;
-      padding:36px 18px;
-      text-align:center;
-    }
-    header h1{margin:0 0 8px;font-size:34px}
-    header p{margin:0;opacity:.95}
-    nav{
-      position: sticky;
-      top: 0;
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(8px);
-      border-bottom:1px solid #f0e3d6;
-      z-index: 10;
-    }
-    nav .bar{
-      max-width:1000px;
-      margin:0 auto;
-      padding:10px 18px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-    }
-    nav a{
-      text-decoration:none;
-      color:#6a3b00;
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid #f0e3d6;
-      background:#fff;
-      font-size:14px;
-    }
-    nav a:hover{background:#fff3e6}
-    .container{max-width:1000px;margin:0 auto;padding:22px 18px 60px}
-    .card{
-      background:#fff;
-      border:1px solid #f0e3d6;
-      border-radius:16px;
-      padding:18px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.05);
-      margin:14px 0;
-    }
-    h2{margin:0 0 10px;color:#6a3b00}
-    .grid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:14px;
-    }
-    @media (max-width:780px){ .grid{grid-template-columns:1fr} }
-    .imgbox{
-      border-radius:14px;
+      width:100%;
+      height:100%;
+      background:linear-gradient(180deg,#111326,#0b0c16);
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      color:var(--text);
       overflow:hidden;
-      border:1px solid #f0e3d6;
-      background:#fff3e6;
-      min-height:220px;
+    }
+    .wrap{
+      position:relative;
+      width:100%;
+      height:100%;
       display:flex;
       align-items:center;
       justify-content:center;
-      color:#8a5a1f;
-      text-align:center;
-      padding:18px;
+      padding:12px;
     }
-    .tag{
-      display:inline-block;
-      margin:6px 6px 0 0;
-      padding:5px 10px;
-      border-radius:999px;
-      border:1px solid #f0e3d6;
-      background:#fff7ee;
-      color:#6a3b00;
+    .frame{
+      width:min(96vw,820px);
+      height:min(96vh,820px);
+      display:grid;
+      grid-template-rows:auto auto 1fr auto;
+      gap:10px;
+      background:linear-gradient(180deg,#22274a,#171a31);
+      border:4px solid #4f5a94;
+      border-radius:18px;
+      box-shadow:0 18px 60px rgba(0,0,0,.45);
+      padding:12px;
+      position:relative;
+      image-rendering:pixelated;
+    }
+    .topbar,.toolbar,.status{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .chip,.btn,.badge{
+      border:2px solid #6c76ac;
+      background:linear-gradient(180deg,#2c335d,#1c2140);
+      color:var(--text);
+      font-weight:700;
+      border-radius:12px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+    }
+    .chip{
+      padding:8px 10px;
+      font-size:14px;
+    }
+    .badge{
+      padding:6px 10px;
       font-size:13px;
+      color:#e7ecff;
     }
-    ul{margin:8px 0 0 18px}
-    .steps li{margin:6px 0}
-    footer{
+    .btn{
+      padding:10px 14px;
+      font-size:14px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:active{
+      transform:translateY(1px);
+      filter:brightness(1.08);
+    }
+    .main{
+      display:grid;
+      grid-template-columns:1fr 220px;
+      gap:12px;
+      min-height:0;
+    }
+    .boardWrap{
+      position:relative;
+      background:linear-gradient(180deg,#111528,#0c1020);
+      border:3px solid #5a6598;
+      border-radius:16px;
+      overflow:hidden;
+      min-height:0;
+    }
+    canvas{
+      display:block;
+      width:100%;
+      height:100%;
+      image-rendering:pixelated;
+    }
+    #board{
+      background:radial-gradient(circle at center,#1a1f38 0,#111528 55%,#0c1020 100%);
+    }
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-width:0;
+    }
+    .card{
+      background:linear-gradient(180deg,#252b50,#181c35);
+      border:2px solid #58639a;
+      border-radius:16px;
+      padding:12px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .card h3{
+      margin:0 0 8px;
+      font-size:15px;
+      color:#fff2a8;
+    }
+    .small{
+      font-size:13px;
+      line-height:1.55;
+      color:#d5dbff;
+    }
+    .legend{
+      display:grid;
+      gap:6px;
+      font-size:13px;
+      color:#d5dbff;
+    }
+    .legend span{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .controls{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      max-width:280px;
+      margin:0 auto;
+      touch-action:none;
+    }
+    .controls .btn{
+      min-height:54px;
+      font-size:18px;
+      background:linear-gradient(180deg,#39406f,#22284a);
+    }
+    .controls .blank{visibility:hidden;}
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .overlay{
+      position:absolute;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(7,10,22,.72);
+      backdrop-filter:blur(2px);
+      z-index:5;
+    }
+    .overlay.show{display:flex;}
+    .modal{
+      min-width:min(88%,360px);
+      background:linear-gradient(180deg,#2a3058,#181c35);
+      border:3px solid #7a84bc;
+      border-radius:18px;
+      padding:18px;
       text-align:center;
-      padding:20px 18px;
-      color:#7b6a58;
-      border-top:1px solid #f0e3d6;
-      background:#fff;
+      box-shadow:0 16px 50px rgba(0,0,0,.4);
     }
-    .note{color:#6b6b6b;font-size:14px}
+    .modal h2{
+      margin:0 0 8px;
+      font-size:26px;
+      color:#fff2a8;
+    }
+    .modal p{
+      margin:6px 0;
+      color:#dbe1ff;
+      line-height:1.6;
+    }
+    .pixel{image-rendering:pixelated;}
+    @media (max-width: 860px){
+      .main{grid-template-columns:1fr}
+      .side{display:none}
+      .frame{
+        height:100vh;
+        width:100vw;
+        border-radius:0;
+        max-width:none;
+        max-height:none;
+        padding:10px;
+      }
+    }
   </style>
 </head>
 <body>
+<div class="wrap">
+  <div class="frame">
+    <div class="topbar">
+      <div class="chip">分数：<span id="score">0</span></div>
+      <div class="chip">最高：<span id="best">0</span></div>
+      <div class="chip">关卡：<span id="level">1</span></div>
+      <div class="chip">剩余：<span id="time">60.0</span>s</div>
+    </div>
 
-<header>
-  <h1>扁粉菜介绍</h1>
-  <p>一碗热乎的河南家常味：扁粉、豆腐、粉条与浓汤的组合</p>
-</header>
+    <div class="toolbar">
+      <div class="badge">像素风 · 中等地图 · 随机成长 · 传送门 · 道具</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn" id="startBtn">开始</button>
+        <button class="btn" id="pauseBtn">暂停</button>
+        <button class="btn" id="restartBtn">重新开始</button>
+        <button class="btn" id="soundBtn">音效：开</button>
+      </div>
+    </div>
 
-<nav>
-  <div class="bar">
-    <a href="#about">什么是扁粉菜</a>
-    <a href="#origin">起源与特点</a>
-    <a href="#ingredients">常见食材</a>
-    <a href="#taste">口感与吃法</a>
-    <a href="#recipe">简易做法</a>
+    <div class="main">
+      <div class="boardWrap">
+        <canvas id="board"></canvas>
+        <div class="overlay" id="overlay">
+          <div class="modal">
+            <h2 id="overTitle">游戏结束</h2>
+            <p id="overText">按“重新开始”再来一局。</p>
+            <p>方向按钮可移动，速度会逐渐加快。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="side">
+        <div class="card">
+          <h3>规则</h3>
+          <div class="small">撞墙立即结束。吃到食物会随机成长。障碍物会阻挡前进。蓝色加速道具会提升速度，紫色传送门会把蛇传到另一侧。每局带计时模式，时间结束后按得分结算。</div>
+        </div>
+
+        <div class="card">
+          <h3>说明</h3>
+          <div class="legend">
+            <span><b>绿色</b><em>食物</em></span>
+            <span><b>红色</b><em>障碍物</em></span>
+            <span><b>蓝色</b><em>加速</em></span>
+            <span><b>紫色</b><em>传送门</em></span>
+            <span><b>灰色</b><em>蛇身</em></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>排行榜</h3>
+          <div class="small" id="rankList">暂无记录</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls" id="controls">
+      <div class="blank btn">.</div>
+      <button class="btn" data-dir="up">▲</button>
+      <div class="blank btn">.</div>
+      <button class="btn" data-dir="left">◀</button>
+      <button class="btn" data-dir="down">●</button>
+      <button class="btn" data-dir="right">▶</button>
+    </div>
+
+    <div class="footer">
+      <span>键盘也可用：方向键 / WASD</span>
+      <span>像素风 UI 美化版</span>
+    </div>
   </div>
-</nav>
-
-<div class="container">
-
-  <section id="about" class="card">
-    <div class="grid">
-      <div>
-        <h2>什么是扁粉菜？</h2>
-        <p>
-          <strong>扁粉菜</strong>是一道常见于河南地区的家常汤菜/小吃，通常以“扁粉（红薯粉皮或宽粉）”
-          为主，搭配豆腐、粉条、青菜等，再浇上热汤或卤汁，味道鲜香、口感滑润。
-        </p>
-        <span class="tag">热汤</span>
-        <span class="tag">爽滑</span>
-        <span class="tag">家常</span>
-        <span class="tag">河南风味</span>
-        <p class="note">可根据地区与店家不同，配料和汤底会有差异。</p>
-      </div>
-      <div class="imgbox">
-        这里可放扁粉菜图片<br/>
-        建议：将图片保存为 <b>banfencai.jpg</b><br/>
-        然后用 &lt;img&gt; 替换本区域
-      </div>
-    </div>
-  </section>
-
-  <section id="origin" class="card">
-    <h2>起源与特点</h2>
-    <p>
-      扁粉菜多见于河南各地早餐摊、小馆子和家庭厨房。它的特点在于：
-    </p>
-    <ul>
-      <li><strong>经济实惠</strong>：用常见食材就能做出一碗满足感很强的热汤。</li>
-      <li><strong>搭配自由</strong>：可加卤肉、海带、豆皮、鸡蛋等，丰俭由人。</li>
-      <li><strong>口感丰富</strong>：扁粉软滑、豆腐嫩、粉条筋道、青菜清爽。</li>
-      <li><strong>汤底关键</strong>：高汤、骨汤或卤汤都能成就不同风味。</li>
-    </ul>
-  </section>
-
-  <section id="ingredients" class="card">
-    <h2>常见食材</h2>
-    <div class="grid">
-      <div>
-        <ul>
-          <li><strong>主料</strong>：扁粉/粉皮（红薯粉制更常见）</li>
-          <li><strong>配料</strong>：嫩豆腐、粉条、青菜（小白菜/菠菜）</li>
-          <li><strong>调味</strong>：盐、酱油、醋、蒜汁、辣椒油、胡椒粉</li>
-          <li><strong>增香</strong>：香菜、葱花、香油</li>
-        </ul>
-        <p class="note">喜欢更“肉香”的可以加卤肉丁或骨汤；清淡派可用素高汤。</p>
-      </div>
-      <div class="imgbox">
-        配料示意：<br/>
-        扁粉 + 豆腐 + 粉条 + 青菜 + 热汤
-      </div>
-    </div>
-  </section>
-
-  <section id="taste" class="card">
-    <h2>口感与吃法</h2>
-    <p>
-      扁粉菜吃起来<strong>滑、嫩、鲜、暖</strong>：扁粉吸汤后柔软入味，豆腐入口细嫩，粉条更有嚼劲。
-      一般趁热吃，出锅后可按口味加入醋、蒜汁、辣椒油或胡椒粉提升层次。
-    </p>
-    <p class="note">小贴士：喜欢酸辣口的，建议“先加醋后加辣”，味道更干净。</p>
-  </section>
-
-  <section id="recipe" class="card">
-    <h2>简易做法（家庭版）</h2>
-    <ol class="steps">
-      <li>准备：扁粉切条/掰块，豆腐切丁，粉条泡软，青菜洗净。</li>
-      <li>煮汤：锅中加高汤或清水，放少许盐、酱油、胡椒粉调味。</li>
-      <li>下料：先下粉条与豆腐，小火煮 3–5 分钟，再放扁粉。</li>
-      <li>收口：扁粉变软后加入青菜烫熟，关火淋少许香油。</li>
-      <li>出碗：撒葱花/香菜，按喜好加醋、蒜汁、辣椒油即可。</li>
-    </ol>
-    <p class="note">想更浓稠：可用少量淀粉水勾薄芡；想更清爽：不勾芡也很好吃。</p>
-  </section>
-
 </div>
 
-<footer>
-  © 2026 扁粉菜介绍网页｜可自行修改内容与配色
-</footer>
+<script>
+(()=> {
+const board = document.getElementById('board');
+const ctx = board.getContext('2d');
 
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+const levelEl = document.getElementById('level');
+const timeEl = document.getElementById('time');
+const startBtn = document.getElementById('startBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const restartBtn = document.getElementById('restartBtn');
+const soundBtn = document.getElementById('soundBtn');
+const overlay = document.getElementById('overlay');
+const overTitle = document.getElementById('overTitle');
+const overText = document.getElementById('overText');
+const rankList = document.getElementById('rankList');
+
+let W, H, cell = 24, cols = 24, rows = 18, offX = 0, offY = 0;
+
+let snake, dir, nextDir, food, obstacles, boosts, portals;
+let score, best, level, alive, running, paused, soundOn, timeLeft, baseSpeed, moveAcc, last = 0, portalCooldown = 0, bestScores = [];
+
+function beep(freq, dur) {
+  if (!soundOn || !window.AudioContext) return;
+  const ac = beep.ac || (beep.ac = new AudioContext());
+  const o = ac.createOscillator();
+  const g = ac.createGain();
+  o.type = 'square';
+  o.frequency.value = freq;
+  o.connect(g);
+  g.connect(ac.destination);
+  g.gain.setValueAtTime(.03, ac.currentTime);
+  g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + dur);
+  o.start();
+  o.stop(ac.currentTime + dur);
+}
+
+const sounds = {
+  eat: () => beep(740, .06),
+  boost: () => beep(980, .07),
+  portal: () => beep(520, .08),
+  dead: () => beep(180, .18),
+  tick: () => beep(260, .03)
+};
+
+function resize() {
+  board.style.width = '100%';
+  board.style.height = '100%';
+  W = board.clientWidth = board.parentElement.clientWidth;
+  H = board.parentElement.clientHeight;
+  board.width = W * devicePixelRatio;
+  board.height = H * devicePixelRatio;
+  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  cell = Math.floor(Math.min(W / cols, H / rows));
+  offX = Math.floor((W - cell * cols) / 2);
+  offY = Math.floor((H - cell * rows) / 2);
+}
+
+function randInt(n) {
+  return Math.floor(Math.random() * n);
+}
+function key(x, y) {
+  return `${x},${y}`;
+}
+function occupied(x, y) {
+  if (x < 0 || y < 0 || x >= cols || y >= rows) return true;
+  for (let i = 0; i < snake.length; i++) {
+    if (snake[i].x === x && snake[i].y === y) return true;
+  }
+  return obstacles.has(key(x, y)) || boosts.some(o => o.x === x && o.y === y) || portals.some(o => o.x === x && o.y === y) || (food && food.x === x && food.y === y);
+}
+
+function spawnFood() {
+  let p;
+  do {
+    p = { x: randInt(cols), y: randInt(rows) };
+  } while (occupied(p.x, p.y));
+  food = p;
+}
+
+function spawnObstacle() {
+  let p;
+  do {
+    p = { x: randInt(cols), y: randInt(rows) };
+  } while (occupied(p.x, p.y));
+  obstacles.add(key(p.x, p.y));
+}
+
+function spawnBoost() {
+  let p;
+  do {
+    p = { x: randInt(cols), y: randInt(rows) };
+  } while (occupied(p.x, p.y));
+  boosts.push(p);
+}
+
+function spawnPortalPair() {
+  let a, b;
+  do {
+    a = { x: randInt(cols), y: randInt(rows) };
+  } while (occupied(a.x, a.y));
+  do {
+    b = { x: randInt(cols), y: randInt(rows) };
+  } while (occupied(b.x, b.y) || (b.x === a.x && b.y === a.y));
+  portals = [a, b];
+}
+
+function renderRanks() {
+  const arr = bestScores.length ? bestScores : [best].filter(Boolean);
+  rankList.innerHTML = arr.length ? arr.map((v, i) => `${i + 1}. ${v}`).join('<br>') : '暂无记录';
+}
+
+function saveBest() {
+  best = Math.max(best, score);
+  bestEl.textContent = best;
+  localStorage.setItem('snake_best', best);
+  bestScores = [score, ...bestScores.filter(v => v !== score)].sort((a, b) => b - a).slice(0, 5);
+  localStorage.setItem('snake_rank', JSON.stringify(bestScores));
+  renderRanks();
+}
+
+function updateUI() {
+  scoreEl.textContent = score;
+  bestEl.textContent = best;
+  levelEl.textContent = level;
+  timeEl.textContent = timeLeft.toFixed(1);
+}
+
+function reset() {
+  snake = [
+    { x: 12, y: 9 },
+    { x: 11, y: 9 },
+    { x: 10, y: 9 }
+  ];
+  dir = { x: 1, y: 0 };
+  nextDir = { x: 1, y: 0 };
+  score = 0;
+  level = 1;
+  alive = true;
+  running = false;
+  paused = false;
+  timeLeft = 60;
+  baseSpeed = 7;
+  moveAcc = 0;
+  portalCooldown = 0;
+  obstacles = new Set();
+  boosts = [];
+  portals = [];
+  food = null;
+  overlay.classList.remove('show');
+  pauseBtn.textContent = '暂停';
+  for (let i = 0; i < 6; i++) spawnObstacle();
+  spawnBoost();
+  spawnPortalPair();
+  spawnFood();
+  updateUI();
+}
+
+function setDir(x, y) {
+  if ((dir.x === -x && dir.y === -y) || paused || !alive) return;
+  nextDir = { x, y };
+}
+
+function die() {
+  alive = false;
+  running = false;
+  paused = false;
+  saveBest();
+  overlay.classList.add('show');
+  overTitle.textContent = '游戏结束';
+  overText.textContent = `本局得分 ${score}，达到关卡 ${level}。`;
+  sounds.dead();
+}
+
+function move() {
+  dir = nextDir;
+  const head = snake[0];
+  let nx = head.x + dir.x;
+  let ny = head.y + dir.y;
+
+  if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) {
+    die();
+    return;
+  }
+
+  if (portalCooldown > 0) portalCooldown--;
+
+  const p1 = portals[0], p2 = portals[1];
+  if (p1 && portalCooldown === 0 && ((nx === p1.x && ny === p1.y) || (nx === p2.x && ny === p2.y))) {
+    const target = (nx === p1.x && ny === p1.y) ? p2 : p1;
+    nx = target.x;
+    ny = target.y;
+    portalCooldown = 10;
+    sounds.portal();
+  }
+
+  if (obstacles.has(key(nx, ny)) || snake.some((s, i) => i > 0 && s.x === nx && s.y === ny)) {
+    die();
+    return;
+  }
+
+  snake.unshift({ x: nx, y: ny });
+
+  let grew = false;
+
+  if (food && nx === food.x && ny === food.y) {
+    score += 10 + level * 2;
+    sounds.eat();
+    grew = true;
+    spawnFood();
+    if (Math.random() < .35) spawnObstacle();
+    if (Math.random() < .35) spawnBoost();
+    if (Math.random() < .18) spawnPortalPair();
+    timeLeft = Math.min(99, timeLeft + 2.5);
+  }
+
+  const bi = boosts.findIndex(o => o.x === nx && o.y === ny);
+  if (bi >= 0) {
+    boosts.splice(bi, 1);
+    baseSpeed = Math.min(18, baseSpeed + 2);
+    score += 5;
+    sounds.boost();
+    grew = true;
+    setTimeout(() => baseSpeed = Math.max(6, baseSpeed - 1), 2500);
+    spawnBoost();
+  }
+
+  if (!grew) {
+    const grow = Math.random() < .45 ? 1 : Math.random() < .75 ? 2 : 3;
+    for (let i = 0; i < grow - 1; i++) {
+      snake.push({ ...snake[snake.length - 1] });
+    }
+  }
+
+  if (score >= level * 60) {
+    level++;
+    baseSpeed += .7;
+    spawnObstacle();
+    spawnBoost();
+  }
+
+  updateUI();
+}
+
+function step(dt) {
+  if (!running || paused || !alive) return;
+  timeLeft -= dt;
+  if (timeLeft <= 0) {
+    timeLeft = 0;
+    alive = false;
+    running = false;
+    saveBest();
+    overlay.classList.add('show');
+    overTitle.textContent = '时间到';
+    overText.textContent = `本局得分 ${score}，达到关卡 ${level}。`;
+    sounds.dead();
+    return;
+  }
+
+  moveAcc += dt;
+  baseSpeed = 6 + Math.min(12, score / 55);
+  if (moveAcc >= 1 / baseSpeed) {
+    moveAcc = 0;
+    move();
+  }
+
+  if (timeLeft < 10 && Math.floor(timeLeft * 10) % 10 === 0) sounds.tick();
+  updateUI();
+}
+
+function drawPixelRect(x, y, w, h, c) {
+  ctx.fillStyle = c;
+  ctx.fillRect(offX + x * cell, offY + y * cell, w * cell, h * cell);
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      ctx.fillStyle = (x + y) % 2 ? '#15192f' : '#101429';
+      ctx.fillRect(offX + x * cell, offY + y * cell, cell, cell);
+    }
+  }
+
+  for (const k of obstacles) {
+    const [x, y] = k.split(',').map(Number);
+    drawPixelRect(x, y, 1, 1, '#cf4b4b');
+    ctx.fillStyle = '#ff8a8a';
+    ctx.fillRect(offX + x * cell + 4, offY + y * cell + 4, cell - 8, cell - 8);
+  }
+
+  for (const b of boosts) {
+    drawPixelRect(b.x, b.y, 1, 1, '#4bb7ff');
+    ctx.fillStyle = '#bfe8ff';
+    ctx.fillRect(offX + b.x * cell + 7, offY + b.y * cell + 7, cell - 14, cell - 14);
+  }
+
+  if (portals[0]) {
+    for (const p of portals) {
+      drawPixelRect(p.x, p.y, 1, 1, '#b76bff');
+      ctx.fillStyle = '#e8ccff';
+      ctx.fillRect(offX + p.x * cell + 6, offY + p.y * cell + 6, cell - 12, cell - 12);
+    }
+  }
+
+  if (food) {
+    drawPixelRect(food.x, food.y, 1, 1, '#4de07a');
+    ctx.fillStyle = '#caffd8';
+    ctx.fillRect(offX + food.x * cell + 6, offY + food.y * cell + 6, cell - 12, cell - 12);
+  }
+
+  snake.forEach((s, i) => {
+    const c = i === 0 ? '#e8f0ff' : '#9aa6c8';
+    ctx.fillStyle = c;
+    ctx.fillRect(offX + s.x * cell + 2, offY + s.y * cell + 2, cell - 4, cell - 4);
+    if (i === 0) {
+      ctx.fillStyle = '#ff7b7b';
+      ctx.fillRect(offX + s.x * cell + 6, offY + s.y * cell + 8, 5, 5);
+      ctx.fillRect(offX + s.x * cell + cell - 11, offY + s.y * cell + 8, 5, 5);
+    }
+  });
+
+  ctx.strokeStyle = 'rgba(255,255,255,.07)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x <= cols; x++) {
+    ctx.beginPath();
+    ctx.moveTo(offX + x * cell, .5 + offY);
+    ctx.lineTo(offX + x * cell, .5 + offY + rows * cell);
+    ctx.stroke();
+  }
+  for (let y = 0; y <= rows; y++) {
+    ctx.beginPath();
+    ctx.moveTo(.5 + offX, offY + y * cell);
+    ctx.lineTo(.5 + offX + cols * cell, offY + y * cell);
+    ctx.stroke();
+  }
+
+  requestAnimationFrame(draw);
+}
+
+function loop(t) {
+  if (!last) last = t;
+  const dt = Math.min(.05, (t - last) / 1000);
+  last = t;
+  step(dt);
+  requestAnimationFrame(loop);
+}
+
+function start() {
+  if (!alive) reset();
+  running = true;
+  paused = false;
+  overlay.classList.remove('show');
+}
+
+function togglePause() {
+  if (!alive) return;
+  paused = !paused;
+  pauseBtn.textContent = paused ? '继续' : '暂停';
+}
+
+startBtn.onclick = start;
+pauseBtn.onclick = togglePause;
+restartBtn.onclick = () => { reset(); start(); };
+soundBtn.onclick = () => {
+  soundOn = !soundOn;
+  soundBtn.textContent = '音效：' + (soundOn ? '开' : '关');
+};
+
+document.addEventListener('keydown', e => {
+  const k = e.key.toLowerCase();
+  if (['arrowup', 'w'].includes(k)) setDir(0, -1);
+  else if (['arrowdown', 's'].includes(k)) setDir(0, 1);
+  else if (['arrowleft', 'a'].includes(k)) setDir(-1, 0);
+  else if (['arrowright', 'd'].includes(k)) setDir(1, 0);
+  else if (k === ' ') {
+    e.preventDefault();
+    running ? togglePause() : start();
+  }
+});
+
+document.getElementById('controls').addEventListener('pointerdown', e => {
+  const d = e.target.dataset.dir;
+  if (!d) return;
+  if (d === 'up') setDir(0, -1);
+  if (d === 'down') setDir(0, 1);
+  if (d === 'left') setDir(-1, 0);
+  if (d === 'right') setDir(1, 0);
+  e.preventDefault();
+});
+
+window.addEventListener('resize', resize);
+
+soundOn = true;
+best = +localStorage.getItem('snake_best') || 0;
+bestScores = JSON.parse(localStorage.getItem('snake_rank') || '[]');
+renderRanks();
+resize();
+reset();
+requestAnimationFrame(draw);
+requestAnimationFrame(loop);
+})();
+</script>
 </body>
 </html>
-```
-
-如果你希望网页更像“美食店铺宣传页”（加轮播图、菜单价格、在线下单按钮），告诉我你想要的风格（简约/国风/夜市风）和需要的栏目，我可以继续完善。
